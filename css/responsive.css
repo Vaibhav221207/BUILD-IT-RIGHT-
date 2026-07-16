@@ -1,4 +1,4 @@
-/* =============================================================================
+﻿/* =============================================================================
    11. Responsive Layout
 ============================================================================= */
 @media (max-width: 720px) {
@@ -299,22 +299,28 @@
   50%      { transform: translateX(-50%) translateY(-120%); }
 }
 
-/* Mobile overlay feedback â€” floats on top of structure */
+/* Mobile overlay feedback — sits at the TOP of the screen over the structure.
+   Previously it was at the bottom (bottom: 4.5rem) which covered the material
+   cards the player still needs to tap. Moving it to the top means it overlays
+   the structure area (which has already reacted) — cards stay fully accessible. */
 @media (max-width: 720px) {
   .feedback-message.visible {
     position: fixed;
-    top: auto;
-    bottom: 4.5rem;
+    top: 4.5rem;       /* just below the toolbar buttons at top: 0.75rem */
+    bottom: auto;
     left: 50%;
     transform: translateX(-50%);
     width: auto;
-    max-width: 90vw;
+    max-width: 88vw;
     z-index: 300;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    animation: feedbackSlideUp 0.25s ease-out;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    animation: feedbackSlideDown 0.25s ease-out;
+    /* Override the max-height collapse from game.css for the fixed overlay */
+    max-height: none !important;
+    padding: 0.8rem 1.1rem !important;
   }
-  @keyframes feedbackSlideUp {
-    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  @keyframes feedbackSlideDown {
+    from { opacity: 0; transform: translateX(-50%) translateY(-12px); }
     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
 }

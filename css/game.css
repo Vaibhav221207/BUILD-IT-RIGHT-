@@ -1,119 +1,209 @@
 /* =============================================================================
-   6. Game Screen â€” Header & Instruction
+   Build It Right — game.css
+   Styles specific to the game screen: header bar, stage instruction,
+   the SVG structure display, the active-slot pulse animation, and
+   the feedback message (correct / wrong / reminder).
 ============================================================================= */
-#screen-game .screen-content { align-items: stretch; gap: 1rem; }
 
-/* Game screen â€” use flex layout to fit in viewport on all devices */
+
+/* =============================================================================
+   Game Screen Layout
+   The game screen is a flex column that fills the viewport height.
+   Children (header, instruction, structure, cards) are stacked vertically
+   and share the available space. flex: 1 on screen-content lets it grow
+   to fill whatever space the screen provides.
+============================================================================= */
 #screen-game {
-  align-items: stretch;
+  align-items: stretch; /* children stretch to full width, not just centred */
 }
+
 #screen-game .screen-content {
+  align-items: stretch;
+  gap: 1rem;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
+
+/* =============================================================================
+   Game Header
+   A pill-shaped banner at the top of the game screen.
+   Left side: level title (e.g. "Build a Wall")
+   Right side: stage progress badge (e.g. "Stage 2 of 4")
+============================================================================= */
 .game-header {
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;            /* stacks vertically on very narrow screens */
   background: linear-gradient(135deg, #FFF9C4, #FFF3CD);
-  border-radius: 16px; padding: 0.75rem 1rem;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
   border: 2px solid #FFD700;
 }
+
+/* The level name on the left */
 .level-title {
   font-size: clamp(1.2rem, 3.5vw, 1.6rem);
-  font-weight: 900; color: #E65100; flex: 1;
+  font-weight: 900;
+  color: #E65100;
+  flex: 1; /* takes up remaining space so the badge stays on the right */
 }
+
+/* "Stage N of M" pill badge on the right */
 .stage-progress {
   font-size: clamp(0.8rem, 2vw, 0.9375rem);
-  color: #fff; font-weight: 800; white-space: nowrap;
+  color: #fff;
+  font-weight: 800;
+  white-space: nowrap; /* prevent "Stage 2\nof 4" wrapping */
   background: linear-gradient(135deg, #51CF66, #2F9E44);
-  border-radius: 50px; padding: 0.35rem 1rem;
+  border-radius: 50px;
+  padding: 0.35rem 1rem;
   box-shadow: 0 3px 0 #1E6B2E;
 }
+
+/* Stage instruction — the text telling the player what to do this stage,
+   e.g. "Choose the material to lay the foundation of the wall." */
 .stage-instruction {
   font-size: clamp(1rem, 2.5vw, 1.1rem);
-  color: #2c3e50; font-weight: 600; text-align: center;
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: center;
   padding: 0.7rem 1rem;
   background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
   border-radius: 14px;
-  border-left: 5px solid #1976D2;
+  border-left: 5px solid #1976D2; /* blue accent strip on the left edge */
 }
 
+
 /* =============================================================================
-   7. Structure Display & SVG
+   Structure Display
+   The container that holds the SVG building diagram drawn by render.js.
+   Uses a light blue gradient background to suggest a sky/outdoors scene.
+   flex-shrink: 1 allows it to shrink on very small screens so the cards
+   below it remain visible.
 ============================================================================= */
 .structure-display {
-  width: 100%; border-radius: 20px; overflow: hidden;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;         /* clips the SVG's rounded corners */
   background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 100%);
   border: 3px solid #90CAF9;
-  box-shadow: 0 4px 0 #42A5F5, 0 6px 20px rgba(66,165,245,0.2);
+  box-shadow: 0 4px 0 #42A5F5, 0 6px 20px rgba(66, 165, 245, 0.2);
   min-height: 210px;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: box-shadow 0.2s ease;
   flex-shrink: 1;
 }
+
+/* Drag-over state — shown when the player drags a material card over
+   the structure. The pulsing gold glow signals "drop here". */
 .structure-display.drag-over {
   border-color: #FFD700;
-  box-shadow: 0 0 0 4px rgba(255,215,0,0.4), 0 4px 0 #FFC200;
+  box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.4), 0 4px 0 #FFC200;
   animation: dropZonePulse 0.8s ease-in-out infinite;
 }
+
 @keyframes dropZonePulse {
-  0%,100% { box-shadow: 0 0 0 4px rgba(255,215,0,0.3), 0 4px 0 #FFC200; }
-  50%      { box-shadow: 0 0 0 12px rgba(255,215,0,0.5), 0 4px 0 #FFC200; }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.3), 0 4px 0 #FFC200; }
+  50%       { box-shadow: 0 0 0 12px rgba(255, 215, 0, 0.5), 0 4px 0 #FFC200; }
 }
 
-#structure-svg { display: block; width: 100%; height: auto; cursor: default; }
+/* The SVG element itself — block removes the small gap that inline elements create */
+#structure-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: default;
+}
 
-/* Active SVG slot group â€” pulsing gold glow */
-.svg-slot-active { animation: svgSlotPulse 1.3s ease-in-out infinite; }
+/* Active slot glow — applied by JavaScript via pulseSlot() in render.js
+   to the SVG <g> element that represents the stage the player needs to fill.
+   The drop-shadow filter creates a gold glow effect without affecting layout. */
+.svg-slot-active {
+  animation: svgSlotPulse 1.3s ease-in-out infinite;
+}
+
 @keyframes svgSlotPulse {
-  0%, 100% { filter: drop-shadow(0 0 3px rgba(255,215,0,0.4)); }
-  50%       { filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)); }
+  0%, 100% { filter: drop-shadow(0 0 3px  rgba(255, 215, 0, 0.4)); }
+  50%       { filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9)); }
 }
+
 
 /* =============================================================================
-   8. Feedback Message
+   Feedback Message
+   Shown after a placement attempt:
+     .feedback-success  — green box: "Correct! Great job!"
+     .feedback-error    — red box: failure explanation
+     .feedback-reminder — yellow box: "Pick a card first!"
+
+   On desktop the message is in the normal document flow between the
+   instruction and the structure. It collapses to zero height when hidden
+   (max-height: 0 + overflow: hidden) so it never pushes the layout around.
+
+   On mobile (responsive.css) it becomes position: fixed near the top of
+   the screen so it overlays the structure rather than the cards below.
 ============================================================================= */
 .feedback-message {
-  width: 100%; border-radius: 16px;
-  padding: 0.9rem 1.25rem;
+  width: 100%;
+  border-radius: 16px;
   font-size: clamp(0.9375rem, 2.5vw, 1.0625rem);
-  font-weight: 700; text-align: center; line-height: 1.45;
-  opacity: 0; visibility: hidden;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.45;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 0.15s ease, visibility 0.15s ease;
   border: 2px solid transparent;
-  /*
-   * KEY: zero height when hidden so it never pushes layout.
-   * max-height + overflow:hidden collapses the box without affecting
-   * sibling positions. When .visible is added we expand it.
-   */
+
+  /* Collapsed state — zero height so it takes up no space when hidden.
+     max-height + overflow:hidden is used instead of display:none because
+     CSS animations cannot transition on display changes. */
   max-height: 0;
   overflow: hidden;
   padding-top: 0;
   padding-bottom: 0;
   margin: 0;
 }
+
+/* Visible state — JavaScript adds .visible when a message needs to show */
 .feedback-message.visible {
   opacity: 1;
   visibility: visible;
-  max-height: 120px;      /* enough for two lines of text */
+  max-height: 120px;      /* enough for two wrapped lines of text */
   padding: 0.9rem 1.25rem;
   animation: feedbackAppear 0.22s ease-out;
 }
 
+/* Correct placement — green */
 .feedback-success {
-  background: #D4EDDA; color: #155724; border-color: #51CF66;
+  background: #D4EDDA;
+  color: #155724;
+  border-color: #51CF66;
   box-shadow: 0 3px 0 #2F9E44;
 }
+
+/* Wrong placement — red/pink */
 .feedback-error {
-  background: #F8D7DA; color: #721C24; border-color: #FF6B6B;
+  background: #F8D7DA;
+  color: #721C24;
+  border-color: #FF6B6B;
   box-shadow: 0 3px 0 #C92A2A;
 }
+
+/* Reminder (tapped slot without selecting a card first) — amber */
 .feedback-reminder {
-  background: #FFF3CD; color: #856404; border-color: #FFD43B;
+  background: #FFF3CD;
+  color: #856404;
+  border-color: #FFD43B;
   box-shadow: 0 3px 0 #E67700;
 }
+
+/* Optional secondary hint line inside a feedback message */
 .feedback-hint {
   margin-top: 0.35rem;
   font-weight: 800;

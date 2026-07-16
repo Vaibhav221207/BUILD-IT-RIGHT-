@@ -1,44 +1,72 @@
 /* =============================================================================
-   2. Screens & Screen Management
+   Build It Right — screens.css
+   Screen management, all four screen layouts (Start, Level Select, Game,
+   Results), and all the UI elements specific to each screen.
+   Also includes: settings overlay, game toolbar, confetti, best-score badges.
+============================================================================= */
+
+
+/* =============================================================================
+   Screen Visibility
+   All .screen sections are hidden by default (display: none).
+   JavaScript adds .active to exactly ONE screen at a time via showScreen().
+   active screens use display: flex to centre their content vertically.
 ============================================================================= */
 .screen {
   display: none;
-  min-height: 100dvh; width: 100%;
-  align-items: center; justify-content: center;
+  min-height: 100dvh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
   padding: 1.5rem 1rem;
 }
 .screen.active { display: flex; }
 
-/* Bright white card with thick colorful border */
+/* White content card — the rounded panel that holds each screen's content.
+   max-width: 740px keeps it readable on wide monitors.
+   The thick gold border and bottom shadow give it a "card on a table" feel. */
 .screen-content {
-  width: 100%; max-width: 740px;
+  width: 100%;
+  max-width: 740px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 28px;
   border: 4px solid #FFD700;
   padding: clamp(1.5rem, 5vw, 2.75rem);
   box-shadow:
-    0 8px 0 #FFC200,
-    0 12px 32px rgba(0,0,0,0.18);
-  display: flex; flex-direction: column;
-  align-items: center; gap: 1.25rem;
+    0 8px 0 #FFC200,              /* solid bottom shadow — looks like a thick base */
+    0 12px 32px rgba(0,0,0,0.18); /* soft drop shadow beneath */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
 }
 
-/* =============================================================================
-   4. Start Screen
-============================================================================= */
-#screen-start .screen-content { gap: 2rem; text-align: center; }
 
+/* =============================================================================
+   Start Screen
+   Hero screen with animated title, feature pills, play button, and settings.
+============================================================================= */
+#screen-start .screen-content {
+  gap: 2rem;
+  text-align: center;
+}
+
+/* Main game title — gradient text from orange to gold.
+   background-clip: text applies the gradient to the text pixels only.
+   -webkit- prefix is needed for Safari. */
 .game-title {
   font-size: clamp(2.2rem, 8vw, 4rem);
   font-weight: 900;
   background: linear-gradient(135deg, #FF6B00 0%, #FFD700 50%, #FF6B00 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -1px;
-  filter: drop-shadow(0 3px 6px rgba(255,107,0,0.3));
+  filter: drop-shadow(0 3px 6px rgba(255, 107, 0, 0.3));
   animation: titleBounce 2s ease-in-out infinite;
 }
+/* Subtle up-and-down float on the title */
 @keyframes titleBounce {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-6px); }
@@ -46,146 +74,65 @@
 
 .game-subtitle {
   font-size: clamp(1rem, 3vw, 1.25rem);
-  color: #4a6580; max-width: 38ch;
+  color: #4a6580;
+  max-width: 38ch; /* ~38 characters per line — comfortable reading width */
 }
 
+/* Oversized "Start Building!" button on the start screen */
 #screen-start .btn-primary {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
-  padding: 1.1rem 4rem; min-height: 64px; min-width: 200px;
+  padding: 1.1rem 4rem;
+  min-height: 64px;
+  min-width: 200px;
 }
 
-/* =============================================================================
-   5. Level Select Screen
-============================================================================= */
-#screen-level-select h2 {
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  font-weight: 900; color: #FF6B00; text-align: center;
-}
-#screen-level-select .screen-content > p {
-  color: #4a6580; text-align: center; font-size: 1.0625rem;
-}
-
-.level-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem; width: 100%;
-}
-
-.btn-level {
-  flex-direction: column; gap: 0.4rem;
-  padding: 1.4rem 1rem; border-radius: 20px;
-  min-height: 160px; color: #fff; font-weight: 700;
-  border: 3px solid rgba(255,255,255,0.4);
-  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s ease;
-}
-.btn-level:nth-child(1) { background: linear-gradient(145deg, #FF7043, #BF360C); box-shadow: 0 6px 0 #7F2306; }
-.btn-level:nth-child(2) { background: linear-gradient(145deg, #42A5F5, #0D47A1); box-shadow: 0 6px 0 #092E72; }
-.btn-level:nth-child(3) { background: linear-gradient(145deg, #66BB6A, #1B5E20); box-shadow: 0 6px 0 #114016; }
-.btn-level:nth-child(4) { background: linear-gradient(145deg, #AB47BC, #4A148C); box-shadow: 0 6px 0 #2E0A58; }
-
-.btn-level:hover { transform: translateY(-6px) scale(1.04); }
-.btn-level:hover:nth-child(1) { box-shadow: 0 10px 0 #7F2306, 0 14px 28px rgba(255,112,67,0.45); }
-.btn-level:hover:nth-child(2) { box-shadow: 0 10px 0 #092E72, 0 14px 28px rgba(66,165,245,0.45); }
-.btn-level:hover:nth-child(3) { box-shadow: 0 10px 0 #114016, 0 14px 28px rgba(102,187,106,0.45); }
-.btn-level:hover:nth-child(4) { box-shadow: 0 10px 0 #2E0A58, 0 14px 28px rgba(171,71,188,0.45); }
-
-.level-icon  { font-size: 2.8rem; line-height: 1; display: block; }
-.level-name  { font-size: clamp(1rem, 2.5vw, 1.2rem); font-weight: 800; }
-.level-stages { font-size: 0.8rem; opacity: 0.85; font-weight: 500;
-                background: rgba(0,0,0,0.18); border-radius: 20px;
-                padding: 0.15rem 0.6rem; display: inline-block; }
-.level-difficulty { font-size: 0.85rem; display: block; }
-
-/* =============================================================================
-   10. Results Screen
-============================================================================= */
-#screen-results .screen-content { align-items: stretch; gap: 1.35rem; }
-
-#screen-results h2 {
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  font-weight: 900; color: #FF6B00; text-align: center;
-}
-
-.results-trophy {
-  font-size: 5rem; text-align: center; line-height: 1;
-  animation: trophyBounce 0.6s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes trophyBounce {
-  0%   { transform: scale(0) rotate(-20deg); }
-  70%  { transform: scale(1.2) rotate(5deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-.results-level-title {
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
-  color: #E65100; text-align: center; font-weight: 900;
-}
-.results-stars {
-  text-align: center; font-size: clamp(1.1rem, 3vw, 1.4rem);
-  font-weight: 800; color: #FF6B00;
-  background: linear-gradient(135deg, #FFF9C4, #FFF3CD);
-  border-radius: 12px; padding: 0.6rem;
-  border: 2px solid #FFD700;
-}
-
-.results-table {
-  width: 100%; border-collapse: collapse;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  border-radius: 12px; overflow: hidden;
-}
-.results-table thead {
-  background: linear-gradient(135deg, #FF9F0A, #FF6B00);
-  color: #fff;
-}
-.results-table th { padding: 0.7rem 1rem; text-align: left; font-weight: 800; }
-.results-table td { padding: 0.65rem 1rem; border-bottom: 2px solid #f0f0f0; color: #1a2e44; }
-.results-table tbody tr:last-child td { border-bottom: none; }
-.results-table tbody tr:nth-child(odd)  { background: #FFF9F0; }
-.results-table tbody tr:nth-child(even) { background: #FFF3E0; }
-
-.attempts-cell { text-align: center; font-weight: 800; color: #FF6B00; }
-.results-time { font-size: clamp(1rem, 3vw, 1.2rem); text-align: center; color: #1a2e44; font-weight: 600; }
-.results-time strong { color: #FF6B00; }
-
-.results-buttons {
-  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
-}
-.results-buttons .btn { flex: 1 1 140px; max-width: 220px; }
-
-/* =============================================================================
-   12. Start screen enhancements
-============================================================================= */
-.start-content { gap: 1.5rem !important; }
+/* Start screen banner — the two 🏗️ icons flanking the title */
 .start-banner {
-  display: flex; align-items: center; gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   justify-content: center;
 }
-.start-banner-icon { font-size: 2.5rem; animation: floatBadge 2s ease-in-out infinite; }
+/* Each icon floats and tilts independently */
+.start-banner-icon {
+  font-size: 2.5rem;
+  animation: floatBadge 2s ease-in-out infinite;
+}
 .start-banner-icon:last-child { animation-delay: 1s; }
 @keyframes floatBadge {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-8px) rotate(5deg); }
+  0%, 100% { transform: translateY(0)    rotate(0deg); }
+  50%       { transform: translateY(-8px) rotate(5deg); }
 }
+
+/* Feature preview pills (🧱 Wall, 🌉 Bridge, etc.) */
 .start-features {
-  display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .start-feature {
   background: linear-gradient(135deg, #FFF9C4, #FFF3CD);
   border: 2px solid #FFD700;
   border-radius: 50px;
   padding: 0.4rem 1rem;
-  font-weight: 800; font-size: 0.95rem; color: #E65100;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #E65100;
   box-shadow: 0 3px 0 #FFC200;
-  animation: featurePop 0.4s cubic-bezier(.34,1.56,.64,1) both;
+  /* Each pill pops in with a staggered delay */
+  animation: featurePop 0.4s cubic-bezier(.34, 1.56, .64, 1) both;
 }
-.start-feature:nth-child(1){animation-delay:.1s}
-.start-feature:nth-child(2){animation-delay:.2s}
-.start-feature:nth-child(3){animation-delay:.3s}
-.start-feature:nth-child(4){animation-delay:.4s}
+.start-feature:nth-child(1) { animation-delay: 0.1s; }
+.start-feature:nth-child(2) { animation-delay: 0.2s; }
+.start-feature:nth-child(3) { animation-delay: 0.3s; }
+.start-feature:nth-child(4) { animation-delay: 0.4s; }
 @keyframes featurePop {
   from { transform: scale(0); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
+
+/* The large play button pulses to draw attention */
 .btn-play-big {
   font-size: clamp(1.2rem, 3vw, 1.5rem) !important;
   padding: 1.1rem 4rem !important;
@@ -194,57 +141,21 @@
   animation: playBtnPulse 2s ease-in-out infinite;
 }
 @keyframes playBtnPulse {
-  0%,100% { box-shadow: 0 5px 0 #CC5200, 0 8px 20px rgba(255,107,0,0.4); }
-  50%      { box-shadow: 0 5px 0 #CC5200, 0 8px 40px rgba(255,107,0,0.7); }
+  0%, 100% { box-shadow: 0 5px 0 #CC5200, 0 8px 20px rgba(255,107,0,0.4); }
+  50%       { box-shadow: 0 5px 0 #CC5200, 0 8px 40px rgba(255,107,0,0.7); }
 }
+
+/* Small italic hint below the play button */
 .start-hint {
-  font-size: 0.875rem; color: #6b7c93; font-style: italic; text-align: center;
+  font-size: 0.875rem;
+  color: #6b7c93;
+  font-style: italic;
+  text-align: center;
 }
 
-/* Card swatch â€” taller and more distinct */
-.card-texture-swatch {
-  height: 36px !important;
-  margin-bottom: 0.65rem !important;
-}
-
-/* Material card border color by texture type */
-.mat-concrete .card, .mat-mass-concrete .card, .mat-reinforced-concrete .card,
-.mat-concrete-piles .card { border-color: #90a4ae; }
-.mat-clay-bricks .card { border-color: #e53935; }
-.mat-sand .card, .mat-bridge-sand .card, .mat-sand-fill .card { border-color: #f9a825; }
-.mat-structural-steel .card, .mat-steel-rebar .card { border-color: #78909c; }
-
-/* Better card description â€” prevent text cut-off */
-.card-desc {
-  display: -webkit-box !important;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 2.4em;
-}
-
-/* Confetti */
-.confetti-piece {
-  position: fixed;
-  top: -20px;
-  pointer-events: none;
-  z-index: 9000;
-  animation: confettiFall linear forwards;
-}
-@keyframes confettiFall {
-  0%   { transform: translateX(0)           translateY(0)    rotate(0deg); opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateX(var(--drift)) translateY(110vh) rotate(var(--rot)); opacity: 0; }
-}
-
-/* =============================================================================
-   NEW UI: Settings, Toolbar, Improved Level Select, Back Button
-============================================================================= */
-
-/* Settings button on start screen */
+/* Settings button on the start screen (smaller, secondary style) */
 .btn-settings-start {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   color: #E65100;
   border: 2px solid #FFD700;
   padding: 0.6rem 1.8rem;
@@ -258,13 +169,19 @@
   transform: translateY(-2px) scale(1.04);
 }
 
-/* Settings overlay â€” full-screen backdrop */
+
+/* =============================================================================
+   Settings Overlay
+   A full-screen semi-transparent backdrop with a centred settings panel.
+   Clicking outside the panel (on the backdrop) dismisses it.
+   JavaScript adds .active to show it, removes .active to hide it.
+============================================================================= */
 .settings-overlay {
-  display: none;
+  display: none;      /* hidden by default */
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 500;
+  inset: 0;           /* covers the full viewport */
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 500;       /* above all game content */
   align-items: center;
   justify-content: center;
   padding: 1rem;
@@ -278,12 +195,12 @@
   to   { opacity: 1; }
 }
 
-/* Settings panel card */
+/* The white card inside the overlay */
 .settings-panel {
   background: #fff;
   border-radius: 24px;
   border: 4px solid #FFD700;
-  box-shadow: 0 8px 0 #FFC200, 0 12px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 0 #FFC200, 0 12px 40px rgba(0, 0, 0, 0.3);
   padding: 2rem 2.5rem;
   width: 100%;
   max-width: 400px;
@@ -291,44 +208,25 @@
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
-  animation: popIn 0.25s cubic-bezier(.34,1.56,.64,1);
+  animation: popIn 0.25s cubic-bezier(.34, 1.56, .64, 1);
 }
+/* Panel bounces in from small — gives a playful feel */
 @keyframes popIn {
   from { transform: scale(0.85); opacity: 0; }
   to   { transform: scale(1);    opacity: 1; }
 }
 
-.settings-title {
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: #E65100;
-}
+.settings-title { font-size: 1.6rem; font-weight: 900; color: #E65100; }
+.settings-row   { width: 100%; display: flex; justify-content: center; }
+.settings-about { text-align: center; color: #4a6580; font-size: 0.95rem; line-height: 1.5; }
+.settings-btn   { min-width: 200px; font-size: 1rem; }
+.settings-close-btn { min-width: 160px; margin-top: 0.5rem; }
 
-.settings-row {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.settings-about {
-  text-align: center;
-  color: #4a6580;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.settings-btn {
-  min-width: 200px;
-  font-size: 1rem;
-}
-
-.settings-close-btn {
-  min-width: 160px;
-  margin-top: 0.5rem;
-}
 
 /* =============================================================================
-   Game Toolbar (Home + Restart + Mute) â€” fixed strip at top
+   Game Toolbar
+   Three circular icon buttons (Home, Restart, Mute) fixed to the top-right
+   corner of the screen during gameplay. Hidden on all other screens.
 ============================================================================= */
 .game-toolbar {
   position: fixed;
@@ -344,79 +242,38 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255, 255, 255, 0.92);
   border: 2.5px solid #FFD700;
   font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   line-height: 1;
 }
-.toolbar-btn:hover {
-  transform: scale(1.15);
-  box-shadow: 0 5px 14px rgba(0,0,0,0.25);
-}
+.toolbar-btn:hover  { transform: scale(1.15); box-shadow: 0 5px 14px rgba(0,0,0,0.25); }
 .toolbar-btn:active { transform: scale(0.92); }
 
-/* Hide toolbar when not on game screen */
-#screen-game:not(.active) ~ * .game-toolbar,
+/* Hide toolbar when the game screen is not active.
+   :has() is well-supported in modern browsers (Chrome 105+, Safari 15.4+). */
 body:not(:has(#screen-game.active)) .game-toolbar {
   display: none;
 }
 
-/* =============================================================================
-   Improved Level Select
-============================================================================= */
-.level-select-header {
-  text-align: center;
-  width: 100%;
-}
-.level-select-header h2 {
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  font-weight: 900;
-  color: #FF6B00;
-}
-.level-select-sub {
-  color: #4a6580;
-  font-size: 1rem;
-  margin-top: 0.25rem;
-}
-
-/* Level card: add description text */
-.level-desc {
-  font-size: 0.78rem;
-  opacity: 0.88;
-  font-weight: 500;
-  line-height: 1.3;
-  display: block;
-  max-width: 160px;
-}
-
-.level-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-  justify-content: center;
-}
-
-/* Back button on level select */
-.btn-back {
-  min-width: 120px;
-  padding: 0.65rem 1.5rem;
-  font-size: 0.95rem;
-  margin-top: 0.5rem;
-}
 
 /* =============================================================================
-   REDESIGNED LEVEL SELECT PAGE
+   Level Select Screen
+   A 2x2 grid of level cards, each with a mini SVG preview of the structure,
+   a coloured top border, level name, description, and difficulty/stage badges.
 ============================================================================= */
 
-/* Screen override â€” allow scrolling on small screens */
-#screen-level-select { align-items: flex-start; padding: 1rem; }
+/* Override padding so the content can scroll on small screens */
+#screen-level-select {
+  align-items: flex-start;
+  padding: 1rem;
+}
 #screen-level-select .screen-content,
 .ls-content {
   max-width: 780px;
@@ -424,21 +281,17 @@ body:not(:has(#screen-game.active)) .game-toolbar {
   padding: clamp(1.25rem, 4vw, 2rem);
 }
 
-/* Header */
 .ls-header { text-align: center; width: 100%; }
+
 .ls-title {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 900;
   color: #E65100;
-  text-shadow: 0 2px 8px rgba(230,81,0,0.15);
+  text-shadow: 0 2px 8px rgba(230, 81, 0, 0.15);
 }
-.ls-sub {
-  color: #5a6a7a;
-  font-size: 1rem;
-  margin-top: 0.3rem;
-}
+.ls-sub { color: #5a6a7a; font-size: 1rem; margin-top: 0.3rem; }
 
-/* 2Ã—2 grid â€” collapses to 1-col on small screens */
+/* 2x2 grid — collapses to single column on small screens (see bottom of file) */
 .ls-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -446,127 +299,68 @@ body:not(:has(#screen-game.active)) .game-toolbar {
   width: 100%;
 }
 
-/* Individual level card */
+/* Individual level card — a <button> styled as a visual card.
+   padding: 0 so the SVG banner bleeds edge to edge at the top. */
 .ls-card {
   display: flex;
   flex-direction: column;
   border-radius: 20px;
-  overflow: hidden;
-  border: 3px solid rgba(255,255,255,0.5);
+  overflow: hidden;          /* clips the SVG banner to the card's border-radius */
+  border: 3px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
   background: #fff;
   box-shadow: 0 6px 0 rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.12);
-  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1),
-              box-shadow 0.2s ease;
+  transition: transform 0.2s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.2s ease;
   text-align: left;
   font-family: inherit;
   padding: 0;
 }
-.ls-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 0 rgba(0,0,0,0.18), 0 16px 36px rgba(0,0,0,0.20);
-}
+.ls-card:hover  { transform: translateY(-6px) scale(1.02); }
 .ls-card:active { transform: scale(0.97); }
 
-/* Colored top accent per level */
-.ls-card--wall       { border-color: #ef5350; }
-.ls-card--bridge     { border-color: #42a5f5; }
-.ls-card--dam        { border-color: #66bb6a; }
-.ls-card--sky        { border-color: #ab47bc; }
+/* Accent colour per level — border and hover shadow */
+.ls-card--wall   { border-color: #ef5350; }
+.ls-card--bridge { border-color: #42a5f5; }
+.ls-card--dam    { border-color: #66bb6a; }
+.ls-card--sky    { border-color: #ab47bc; }
 
-.ls-card--wall:hover   { box-shadow: 0 12px 0 #b71c1c, 0 16px 36px rgba(239,83,80,0.3); }
-.ls-card--bridge:hover { box-shadow: 0 12px 0 #0d47a1, 0 16px 36px rgba(66,165,245,0.3); }
+.ls-card--wall:hover   { box-shadow: 0 12px 0 #b71c1c, 0 16px 36px rgba(239,83,80,0.3);   }
+.ls-card--bridge:hover { box-shadow: 0 12px 0 #0d47a1, 0 16px 36px rgba(66,165,245,0.3);  }
 .ls-card--dam:hover    { box-shadow: 0 12px 0 #1b5e20, 0 16px 36px rgba(102,187,106,0.3); }
-.ls-card--sky:hover    { box-shadow: 0 12px 0 #4a148c, 0 16px 36px rgba(171,71,188,0.3); }
+.ls-card--sky:hover    { box-shadow: 0 12px 0 #4a148c, 0 16px 36px rgba(171,71,188,0.3);  }
 
-/* SVG preview banner at top of card */
-.ls-card-banner {
-  width: 100%;
-  height: 90px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.ls-card-banner svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+/* SVG mini-preview at the top of each card */
+.ls-card-banner { width: 100%; height: 90px; overflow: hidden; flex-shrink: 0; }
+.ls-card-banner svg { width: 100%; height: 100%; display: block; }
 
-/* Card info section */
-.ls-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.9rem 1rem 1rem;
-  flex: 1;
-}
-
-/* Big emoji */
-.ls-icon {
-  font-size: 2rem;
-  line-height: 1;
-  display: block;
-  margin-bottom: 0.1rem;
-}
-
-/* Level name */
-.ls-name {
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-  font-weight: 900;
-  color: #1a2e44;
-  display: block;
-  line-height: 1.2;
-}
-
-/* Short description */
-.ls-desc {
-  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
-  color: #5a6a7a;
-  display: block;
-  line-height: 1.4;
-  min-height: 2.4em;
-}
-
-/* Badges row */
-.ls-badges {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  margin-top: 0.3rem;
-}
-
-.ls-badge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.2rem 0.6rem;
-  border-radius: 50px;
-  display: inline-block;
-}
-
-.ls-badge--stages {
-  background: #E3F2FD;
-  color: #0D47A1;
-  border: 1.5px solid #90CAF9;
-}
-
-.ls-card--wall   .ls-badge--diff { background:#FFEBEE; color:#B71C1C; border:1.5px solid #EF9A9A; }
-.ls-card--bridge .ls-badge--diff { background:#E3F2FD; color:#0D47A1; border:1.5px solid #90CAF9; }
-.ls-card--dam    .ls-badge--diff { background:#E8F5E9; color:#1B5E20; border:1.5px solid #A5D6A7; }
-.ls-card--sky    .ls-badge--diff { background:#F3E5F5; color:#4A148C; border:1.5px solid #CE93D8; }
-
-/* Color bar at top of card (using border-top) */
+/* Thick colour strip along the very top edge of each banner */
 .ls-card--wall   .ls-card-banner { border-top: 4px solid #ef5350; }
 .ls-card--bridge .ls-card-banner { border-top: 4px solid #42a5f5; }
 .ls-card--dam    .ls-card-banner { border-top: 4px solid #66bb6a; }
 .ls-card--sky    .ls-card-banner { border-top: 4px solid #ab47bc; }
 
-/* Back button */
-#screen-level-select .btn-back {
-  align-self: flex-start;
-  min-width: 140px;
-}
+/* Text body below the banner */
+.ls-card-body { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.9rem 1rem 1rem; flex: 1; }
+.ls-icon  { font-size: 2rem;  line-height: 1; display: block; margin-bottom: 0.1rem; }
+.ls-name  { font-size: clamp(0.95rem, 2.5vw, 1.1rem); font-weight: 900; color: #1a2e44; display: block; line-height: 1.2; }
+.ls-desc  { font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: #5a6a7a; display: block; line-height: 1.4; min-height: 2.4em; }
 
-/* Responsive: single column on small screens */
+/* Stage count + difficulty badges */
+.ls-badges    { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.3rem; }
+.ls-badge     { font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 50px; display: inline-block; }
+.ls-badge--stages { background: #E3F2FD; color: #0D47A1; border: 1.5px solid #90CAF9; }
+
+/* Difficulty badge colours match the level's accent colour */
+.ls-card--wall   .ls-badge--diff { background: #FFEBEE; color: #B71C1C; border: 1.5px solid #EF9A9A; }
+.ls-card--bridge .ls-badge--diff { background: #E3F2FD; color: #0D47A1; border: 1.5px solid #90CAF9; }
+.ls-card--dam    .ls-badge--diff { background: #E8F5E9; color: #1B5E20; border: 1.5px solid #A5D6A7; }
+.ls-card--sky    .ls-badge--diff { background: #F3E5F5; color: #4A148C; border: 1.5px solid #CE93D8; }
+
+/* Back button at the bottom of the level select screen */
+.btn-back { min-width: 120px; padding: 0.65rem 1.5rem; font-size: 0.95rem; margin-top: 0.5rem; }
+#screen-level-select .btn-back { align-self: flex-start; min-width: 140px; }
+
+/* Responsive overrides for level card grid */
 @media (max-width: 520px) {
   .ls-grid { grid-template-columns: 1fr; }
   .ls-card-banner { height: 110px; }
@@ -577,11 +371,67 @@ body:not(:has(#screen-game.active)) .game-toolbar {
   .ls-card-body { padding: 0.75rem 0.75rem 0.9rem; }
 }
 
-/* =============================================================================
-   BEST SCORE SYSTEM
-============================================================================= */
 
-/* "New Best!" banner on results screen */
+/* =============================================================================
+   Results Screen
+   Shown after completing all stages. Displays a trophy animation, star rating,
+   per-stage attempt table, total time, and best-score comparison.
+============================================================================= */
+#screen-results .screen-content {
+  align-items: stretch;
+  gap: 1.35rem;
+}
+#screen-results h2 {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  color: #FF6B00;
+  text-align: center;
+}
+
+/* Trophy emoji — bounces in from tiny when the results screen loads */
+.results-trophy {
+  font-size: 5rem;
+  text-align: center;
+  line-height: 1;
+  animation: trophyBounce 0.6s cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes trophyBounce {
+  0%   { transform: scale(0)   rotate(-20deg); }
+  70%  { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1)   rotate(0deg); }
+}
+
+.results-level-title { font-size: clamp(1.1rem, 3vw, 1.4rem); color: #E65100; text-align: center; font-weight: 900; }
+
+/* Star rating pill (1, 2, or 3 stars depending on wrong guesses) */
+.results-stars {
+  text-align: center;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  font-weight: 800;
+  color: #FF6B00;
+  background: linear-gradient(135deg, #FFF9C4, #FFF3CD);
+  border-radius: 12px;
+  padding: 0.6rem;
+  border: 2px solid #FFD700;
+}
+
+/* Per-stage attempts table */
+.results-table { width: 100%; border-collapse: collapse; font-size: clamp(0.9rem, 2.5vw, 1rem); border-radius: 12px; overflow: hidden; }
+.results-table thead { background: linear-gradient(135deg, #FF9F0A, #FF6B00); color: #fff; }
+.results-table th { padding: 0.7rem 1rem; text-align: left; font-weight: 800; }
+.results-table td { padding: 0.65rem 1rem; border-bottom: 2px solid #f0f0f0; color: #1a2e44; }
+.results-table tbody tr:last-child td { border-bottom: none; }
+.results-table tbody tr:nth-child(odd)  { background: #FFF9F0; }
+.results-table tbody tr:nth-child(even) { background: #FFF3E0; }
+.attempts-cell { text-align: center; font-weight: 800; color: #FF6B00; }
+
+.results-time { font-size: clamp(1rem, 3vw, 1.2rem); text-align: center; color: #1a2e44; font-weight: 600; }
+.results-time strong { color: #FF6B00; }
+
+.results-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.results-buttons .btn { flex: 1 1 140px; max-width: 220px; }
+
+/* "New Best Score!" banner — animated pop-in, shown when a record is broken */
 .results-new-best {
   text-align: center;
   font-size: 1.1rem;
@@ -592,27 +442,20 @@ body:not(:has(#screen-game.active)) .game-toolbar {
   border-radius: 50px;
   padding: 0.4rem 1.2rem;
   box-shadow: 0 3px 0 #FFC200;
-  animation: newBestPop 0.4s cubic-bezier(.34,1.56,.64,1);
+  animation: newBestPop 0.4s cubic-bezier(.34, 1.56, .64, 1);
 }
 @keyframes newBestPop {
   from { transform: scale(0.6); opacity: 0; }
   to   { transform: scale(1);   opacity: 1; }
 }
 
-/* Previous best comparison line */
-.results-prev-best {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #5a6a7a;
-  padding: 0.4rem 1rem;
-  background: #f5f5f5;
-  border-radius: 10px;
-}
-.results-prev-label { font-weight: 700; color: #1a2e44; }
-.results-best-improve { color: #2e7d32; font-weight: 700; }
-.results-best-worse   { color: #c62828; font-weight: 700; }
+/* Previous best comparison — shows old stars, old time, and whether this run was faster */
+.results-prev-best { text-align: center; font-size: 0.875rem; color: #5a6a7a; padding: 0.4rem 1rem; background: #f5f5f5; border-radius: 10px; }
+.results-prev-label  { font-weight: 700; color: #1a2e44; }
+.results-best-improve { color: #2e7d32; font-weight: 700; } /* green for faster */
+.results-best-worse   { color: #c62828; font-weight: 700; } /* red for slower */
 
-/* Best score badge on level select cards */
+/* Best score badge injected onto each level card on the level select screen */
 .ls-best-badge {
   display: flex;
   align-items: center;
@@ -629,3 +472,61 @@ body:not(:has(#screen-game.active)) .game-toolbar {
   box-shadow: 0 2px 0 #FFC200;
 }
 .ls-best-icon { font-size: 0.85rem; }
+
+
+/* =============================================================================
+   Confetti
+   80 small <div> elements created by launchConfetti() in ui.js.
+   Each piece has random CSS custom properties (--drift, --rot) set inline
+   by JavaScript and used in the keyframe animation below.
+============================================================================= */
+.confetti-piece {
+  position: fixed;
+  top: -20px;             /* start just above the viewport */
+  pointer-events: none;
+  z-index: 9000;
+  animation: confettiFall linear forwards;
+}
+
+/* Pieces fall downward, drift sideways, and spin.
+   --drift and --rot are set per-piece by JavaScript. */
+@keyframes confettiFall {
+  0%   { transform: translateX(0)           translateY(0)     rotate(0deg);     opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(var(--drift)) translateY(110vh) rotate(var(--rot)); opacity: 0; }
+}
+
+
+/* =============================================================================
+   Card Texture Swatch Overrides
+   These rules override the base swatch height from components.css for all
+   non-mobile contexts (responsive.css reduces the height on small screens).
+============================================================================= */
+
+/* Make the texture swatch taller so more of the material pattern is visible */
+.card-texture-swatch {
+  height: 36px !important;
+  margin-bottom: 0.65rem !important;
+}
+
+/* Apply a matching accent border to cards based on their material type.
+   This gives extra visual context beyond just the texture swatch colour. */
+.mat-concrete .card,
+.mat-mass-concrete .card,
+.mat-reinforced-concrete .card,
+.mat-concrete-piles .card { border-color: #90a4ae; }
+.mat-clay-bricks .card    { border-color: #e53935; }
+.mat-sand .card,
+.mat-bridge-sand .card,
+.mat-sand-fill .card      { border-color: #f9a825; }
+.mat-structural-steel .card,
+.mat-steel-rebar .card    { border-color: #78909c; }
+
+/* Clamp description text to 2 lines so cards don't grow to different heights */
+.card-desc {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.4em;
+}

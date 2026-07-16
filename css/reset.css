@@ -1,50 +1,79 @@
 /* =============================================================================
-   Build It Right â€” style.css  (Kids-Friendly Bright Theme)
-   Playful daytime sky background, bright pastel cards, bouncy animations.
-   No frameworks Â· No Google Fonts Â· Vanilla CSS only
+   Build It Right — reset.css
+   Base styles: box-model reset, body background, animated sky decorations,
+   cloud elements, and shared utility rules used across every screen.
 ============================================================================= */
 
-/* =============================================================================
-   1. Reset & Base
-============================================================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { font-size: 16px; -webkit-text-size-adjust: 100%; }
-
-body {
-  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  /* Bright daytime sky â†’ grass gradient */
-  background: linear-gradient(180deg,
-    #87CEEB 0%,
-    #B0E2FF 35%,
-    #C8F0A0 70%,
-    #90EE90 100%);
-  background-attachment: fixed;
-  color: #1a2e44;
-  line-height: 1.5;
-  min-height: 100dvh;
-  overflow-x: hidden;
+/* ---- Universal box-model reset ----
+   Makes padding and border part of an element's declared width/height
+   instead of being added on top. Much easier to reason about layouts. */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Animated sun â€” top right corner */
+/* Set the rem anchor — all font sizes in the project use rem so they
+   scale relative to this single value. */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%; /* stop iOS Safari from inflating fonts in landscape */
+}
+
+body {
+  /* Google Fonts Fredoka is loaded in index.html; fall back to system-ui
+     if it hasn't loaded yet. */
+  font-family: 'Fredoka', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* Bright daytime sky -> grass gradient — gives the page a cheerful
+     outdoor feel without any image files. background-attachment:fixed
+     means the gradient stays put while the page content scrolls. */
+  background: linear-gradient(180deg,
+    #87CEEB 0%,     /* sky blue at the top */
+    #B0E2FF 35%,    /* lighter blue mid-sky */
+    #C8F0A0 70%,    /* pale green — approaching the ground */
+    #90EE90 100%);  /* grass green at the bottom */
+  background-attachment: fixed;
+
+  color: #1a2e44;       /* dark navy — high contrast on the light background */
+  line-height: 1.5;
+  min-height: 100dvh;   /* dvh = dynamic viewport height; avoids mobile browser chrome issues */
+  overflow-x: hidden;   /* prevent accidental horizontal scroll from animated clouds */
+}
+
+/* ---- Animated sun (top-right corner) ----
+   Drawn entirely with CSS — no image needed.
+   Uses body::before so it appears behind all content (z-index: 0).
+   The glow is created by a large box-shadow and a radial gradient
+   that fades to transparent at the edges. */
 body::before {
   content: '';
   position: fixed;
-  top: -40px; right: -40px;
-  width: 140px; height: 140px;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
   background: radial-gradient(circle, #FFD700 40%, #FFA500 65%, transparent 70%);
   border-radius: 50%;
-  box-shadow: 0 0 60px 20px rgba(255,215,0,0.35);
+  box-shadow: 0 0 60px 20px rgba(255, 215, 0, 0.35);
   animation: sunSpin 20s linear infinite;
-  z-index: 0; pointer-events: none;
+  z-index: 0;
+  pointer-events: none; /* sun should never block clicks */
 }
+
+/* Slowly rotates the sun — subtle enough to feel alive without being distracting */
 @keyframes sunSpin {
   0%   { transform: rotate(0deg)   scale(1); }
   50%  { transform: rotate(180deg) scale(1.08); }
   100% { transform: rotate(360deg) scale(1); }
 }
 
-/* Floating clouds — CSS only */
+/* ---- Floating clouds ----
+   Four .cloud divs are placed in index.html inside a .clouds wrapper.
+   Each cloud is a fixed-position emoji that drifts from left to right
+   at different speeds and vertical positions. Negative animation-delay
+   values start each cloud at a different point in its journey so the
+   screen doesn't start with all four clouds off-screen simultaneously. */
 .cloud {
   position: fixed;
   z-index: 0;
@@ -53,47 +82,76 @@ body::before {
   white-space: nowrap;
 }
 
+/* Cloud 1 — small, fast, near the top */
 .cloud:nth-child(1) {
-  content: '☁️'; /* Fallback if HTML is empty, but we put it in HTML */
-  top: 10%; left: -150px;
+  top: 10%;
+  left: -150px;
   font-size: 4rem;
   opacity: 0.6;
   animation-duration: 25s;
 }
 
+/* Cloud 2 — large, slow, upper-middle */
 .cloud:nth-child(2) {
-  top: 25%; left: -250px;
+  top: 25%;
+  left: -250px;
   font-size: 5.5rem;
   opacity: 0.45;
   animation-duration: 35s;
-  animation-delay: -10s; /* Start already on screen */
+  animation-delay: -10s; /* starts 10s into its journey so it's on-screen immediately */
 }
 
+/* Cloud 3 — small, medium speed, middle of screen */
 .cloud:nth-child(3) {
-  top: 50%; left: -100px;
+  top: 50%;
+  left: -100px;
   font-size: 3rem;
   opacity: 0.3;
   animation-duration: 20s;
   animation-delay: -5s;
 }
 
+/* Cloud 4 — very large, very slow, near the bottom */
 .cloud:nth-child(4) {
-  top: 75%; left: -300px;
+  top: 75%;
+  left: -300px;
   font-size: 6rem;
   opacity: 0.5;
   animation-duration: 40s;
   animation-delay: -20s;
 }
 
+/* Clouds drift from off-screen left to well off-screen right.
+   calc(100vw + 400px) ensures even the largest cloud fully exits. */
 @keyframes cloudDrift {
   0%   { transform: translateX(0); }
   100% { transform: translateX(calc(100vw + 400px)); }
 }
 
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
+/* ---- Button base reset ----
+   Browsers add their own fonts, cursors, and borders to <button>.
+   Strip those so our .btn class starts from a clean baseline. */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
 
-button:focus-visible { outline: 3px solid #FF6B00; outline-offset: 3px; }
+/* Show a visible focus ring when navigating with keyboard or switch access.
+   :focus-visible only applies for keyboard focus, not mouse clicks. */
+button:focus-visible {
+  outline: 3px solid #FF6B00;
+  outline-offset: 3px;
+}
 
+/* Headings should have tighter line-height than body text */
 h1, h2, h3 { line-height: 1.2; }
 
-.screen, .screen-content { position: relative; z-index: 1; }
+/* Screens and their content panels sit above the decorative
+   sun/cloud layer (z-index: 0) so they always receive pointer events. */
+.screen,
+.screen-content {
+  position: relative;
+  z-index: 1;
+}

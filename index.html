@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build It Right</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/screens.css" />
+  <link rel="stylesheet" href="css/game.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- ===================== START SCREEN ===================== -->
+  <section id="screen-start" class="screen active" aria-label="Start screen">
+    <div class="screen-content start-content">
+      <div class="start-banner">
+        <span class="start-banner-icon">🏗️</span>
+        <h1 class="game-title">Build It Right!</h1>
+        <span class="start-banner-icon">🏗️</span>
+      </div>
+      <p class="game-subtitle">Choose the right materials to build amazing structures!</p>
+      <div class="start-features">
+        <span class="start-feature">🧱 Wall</span>
+        <span class="start-feature">🌉 Bridge</span>
+        <span class="start-feature">🏞️ Dam</span>
+        <span class="start-feature">🏙️ Skyscraper</span>
+      </div>
+      <button id="btn-play" class="btn btn-primary btn-play-big">🚀 Start Building!</button>
+      <button id="btn-settings" class="btn btn-settings-start">⚙️ Settings</button>
+      <p class="start-hint">Tap a card · Drag &amp; drop it · Build it right!</p>
+    </div>
+  </section>
+
+  <!-- =================== SETTINGS OVERLAY =================== -->
+  <div id="settings-overlay" class="settings-overlay" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="settings-panel">
+      <h2 class="settings-title">⚙️ Settings</h2>
+      <div class="settings-row">
+        <button id="settings-mute-toggle" class="btn btn-secondary settings-btn">🔊 Sound: On</button>
+      </div>
+      <div class="settings-row settings-about">
+        <p>Build It Right! teaches civil engineering<br>material selection for ages 8–14.</p>
+        <p style="margin-top:0.5rem;font-size:0.85rem;opacity:0.75;">Version 1.0 · Vanilla JS · No server needed</p>
+      </div>
+      <button id="btn-settings-close" class="btn btn-primary settings-close-btn">✓ Done</button>
+    </div>
+  </div>
+
+  <!-- ================= LEVEL SELECT SCREEN ================= -->
+  <section id="screen-level-select" class="screen" aria-label="Level select screen">
+    <div class="screen-content ls-content">
+
+      <div class="ls-header">
+        <h2 class="ls-title">🏗️ Choose Your Build</h2>
+        <p class="ls-sub">Pick a level and place the right materials!</p>
+      </div>
+
+      <div class="ls-grid">
+
+        <!-- Level 1: Wall -->
+        <button id="btn-level-wall" class="ls-card ls-card--wall" aria-label="Build a Wall, 4 stages, Easy">
+          <div class="ls-card-banner">
+            <svg viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="160" height="70" fill="#87CEEB"/>
+              <rect x="0" y="52" width="160" height="18" fill="#8D6E63"/>
+              <rect x="0" y="50" width="160" height="5" fill="#66BB6A"/>
+              <!-- Wall body -->
+              <rect x="30" y="18" width="100" height="35" fill="#b71c1c"/>
+              <!-- Brick rows -->
+              <rect x="30" y="18" width="100" height="1" fill="#d7ccc8"/>
+              <rect x="30" y="25" width="100" height="1" fill="#d7ccc8"/>
+              <rect x="30" y="32" width="100" height="1" fill="#d7ccc8"/>
+              <rect x="30" y="39" width="100" height="1" fill="#d7ccc8"/>
+              <rect x="30" y="46" width="100" height="1" fill="#d7ccc8"/>
+              <!-- Vertical joints row 1 -->
+              <rect x="48" y="18" width="1" height="7" fill="#d7ccc8"/>
+              <rect x="73" y="18" width="1" height="7" fill="#d7ccc8"/>
+              <rect x="98" y="18" width="1" height="7" fill="#d7ccc8"/>
+              <rect x="123" y="18" width="1" height="7" fill="#d7ccc8"/>
+              <!-- Vertical joints row 2 (offset) -->
+              <rect x="60" y="25" width="1" height="7" fill="#d7ccc8"/>
+              <rect x="85" y="25" width="1" height="7" fill="#d7ccc8"/>
+              <rect x="110" y="25" width="1" height="7" fill="#d7ccc8"/>
+              <!-- Foundation -->
+              <rect x="25" y="50" width="110" height="5" fill="#78909c"/>
+              <!-- Cap -->
+              <rect x="28" y="14" width="104" height="6" fill="#607d8b"/>
+            </svg>
+          </div>
+          <div class="ls-card-body">
+            <span class="ls-icon">🧱</span>
+            <span class="ls-name">Build a Wall</span>
+            <span class="ls-desc">Foundations · Bricks · Mortar · Capping</span>
+            <span class="ls-badges">
+              <span class="ls-badge ls-badge--stages">4 stages</span>
+              <span class="ls-badge ls-badge--diff">⭐ Easy</span>
+            </span>
+          </div>
+        </button>
+
+        <!-- Level 2: Bridge -->
+        <button id="btn-level-bridge" class="ls-card ls-card--bridge" aria-label="Build a Bridge, 5 stages, Medium">
+          <div class="ls-card-banner">
+            <svg viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="160" height="70" fill="#87CEEB"/>
+              <rect x="0" y="45" width="160" height="25" fill="#1565C0"/>
+              <!-- Ripples -->
+              <ellipse cx="40" cy="52" rx="20" ry="4" fill="rgba(255,255,255,0.15)"/>
+              <ellipse cx="120" cy="55" rx="18" ry="3" fill="rgba(255,255,255,0.15)"/>
+              <!-- Banks -->
+              <rect x="0" y="38" width="25" height="32" fill="#6D4C41"/>
+              <rect x="135" y="38" width="25" height="32" fill="#6D4C41"/>
+              <!-- Piers -->
+              <rect x="35" y="25" width="14" height="20" fill="#78909c"/>
+              <rect x="111" y="25" width="14" height="20" fill="#78909c"/>
+              <!-- Arch -->
+              <path d="M 42 25 Q 80 5 118 25" fill="none" stroke="#546e7a" stroke-width="4"/>
+              <!-- Deck -->
+              <rect x="22" y="23" width="116" height="5" fill="#546e7a"/>
+              <!-- Railing -->
+              <line x1="22" y1="20" x2="138" y2="20" stroke="#90a4ae" stroke-width="2"/>
+              <line x1="32" y1="20" x2="32" y2="23" stroke="#90a4ae" stroke-width="1.5"/>
+              <line x1="52" y1="20" x2="52" y2="23" stroke="#90a4ae" stroke-width="1.5"/>
+              <line x1="72" y1="20" x2="72" y2="23" stroke="#90a4ae" stroke-width="1.5"/>
+              <line x1="92" y1="20" x2="92" y2="23" stroke="#90a4ae" stroke-width="1.5"/>
+              <line x1="112" y1="20" x2="112" y2="23" stroke="#90a4ae" stroke-width="1.5"/>
+              <line x1="128" y1="20" x2="128" y2="23" stroke="#90a4ae" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="ls-card-body">
+            <span class="ls-icon">🌉</span>
+            <span class="ls-name">Build a Bridge</span>
+            <span class="ls-desc">Piers · Deck · Rebar · Railings</span>
+            <span class="ls-badges">
+              <span class="ls-badge ls-badge--stages">5 stages</span>
+              <span class="ls-badge ls-badge--diff">⭐⭐ Medium</span>
+            </span>
+          </div>
+        </button>
+
+        <!-- Level 3: Dam -->
+        <button id="btn-level-dam" class="ls-card ls-card--dam" aria-label="Build a Dam, 5 stages, Hard">
+          <div class="ls-card-banner">
+            <svg viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="160" height="70" fill="#87CEEB"/>
+              <!-- Hills -->
+              <polygon points="0,30 40,10 70,22 90,8 120,18 160,25 160,30" fill="#66BB6A"/>
+              <!-- Reservoir -->
+              <rect x="0" y="28" width="68" height="42" fill="#1565C0" opacity="0.85"/>
+              <ellipse cx="30" cy="38" rx="18" ry="4" fill="rgba(255,255,255,0.18)"/>
+              <!-- Ground right -->
+              <rect x="115" y="48" width="45" height="22" fill="#8D6E63"/>
+              <rect x="115" y="46" width="45" height="4" fill="#66BB6A"/>
+              <!-- Dam body trapezoid -->
+              <polygon points="68,28 110,28 114,70 64,70" fill="#90a4ae"/>
+              <!-- Core -->
+              <rect x="82" y="28" width="10" height="42" fill="#546e7a"/>
+              <!-- Waterproof face -->
+              <rect x="68" y="28" width="7" height="42" fill="#1E88E5" opacity="0.7"/>
+              <!-- Riprap -->
+              <rect x="106" y="38" width="10" height="32" fill="#8d6e63"/>
+            </svg>
+          </div>
+          <div class="ls-card-body">
+            <span class="ls-icon">🏞️</span>
+            <span class="ls-name">Build a Dam</span>
+            <span class="ls-desc">Core · Waterproofing · Spillway · Facing</span>
+            <span class="ls-badges">
+              <span class="ls-badge ls-badge--stages">5 stages</span>
+              <span class="ls-badge ls-badge--diff">⭐⭐⭐ Hard</span>
+            </span>
+          </div>
+        </button>
+
+        <!-- Level 4: Skyscraper -->
+        <button id="btn-level-skyscraper" class="ls-card ls-card--sky" aria-label="Build a Skyscraper, 5 stages, Expert">
+          <div class="ls-card-banner">
+            <svg viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="160" height="70" fill="#1a237e"/>
+              <!-- Stars -->
+              <circle cx="20" cy="10" r="1" fill="white" opacity="0.7"/>
+              <circle cx="50" cy="6" r="1.2" fill="white" opacity="0.8"/>
+              <circle cx="130" cy="12" r="1" fill="white" opacity="0.6"/>
+              <circle cx="145" cy="5" r="0.8" fill="white" opacity="0.7"/>
+              <!-- Bg buildings -->
+              <rect x="5" y="38" width="18" height="32" fill="rgba(255,255,255,0.06)"/>
+              <rect x="135" y="32" width="20" height="38" fill="rgba(255,255,255,0.06)"/>
+              <!-- Main building -->
+              <rect x="55" y="15" width="50" height="55" fill="rgba(100,181,246,0.5)"/>
+              <!-- Windows grid -->
+              <rect x="59" y="19" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="71" y="19" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="83" y="19" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="95" y="19" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="59" y="30" width="8" height="7" fill="rgba(255,255,255,0.35)" rx="1"/>
+              <rect x="71" y="30" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="83" y="30" width="8" height="7" fill="rgba(255,255,255,0.35)" rx="1"/>
+              <rect x="95" y="30" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="59" y="41" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="71" y="41" width="8" height="7" fill="rgba(255,255,255,0.35)" rx="1"/>
+              <rect x="83" y="41" width="8" height="7" fill="rgba(144,202,249,0.6)" rx="1"/>
+              <rect x="95" y="41" width="8" height="7" fill="rgba(255,255,255,0.35)" rx="1"/>
+              <!-- Roof peak -->
+              <polygon points="55,15 80,4 105,15" fill="#455a64"/>
+              <!-- Antenna -->
+              <line x1="80" y1="4" x2="80" y2="-2" stroke="#cfd8dc" stroke-width="1.5"/>
+              <!-- Ground -->
+              <rect x="0" y="66" width="160" height="4" fill="#263238"/>
+              <!-- Core frame visible -->
+              <rect x="72" y="15" width="16" height="55" fill="rgba(84,110,122,0.6)"/>
+            </svg>
+          </div>
+          <div class="ls-card-body">
+            <span class="ls-icon">🏙️</span>
+            <span class="ls-name">Build a Skyscraper</span>
+            <span class="ls-desc">Piles · Steel Frame · Curtain Wall · Roof</span>
+            <span class="ls-badges">
+              <span class="ls-badge ls-badge--stages">5 stages</span>
+              <span class="ls-badge ls-badge--diff">⭐⭐⭐⭐ Expert</span>
+            </span>
+          </div>
+        </button>
+
+      </div><!-- /.ls-grid -->
+
+      <button id="btn-back-to-start" class="btn btn-secondary btn-back">← Back to Home</button>
+
+    </div>
+  </section>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <section id="screen-game" class="screen" aria-label="Game screen">
+    <!-- Floating toolbar -->
+    <div class="game-toolbar">
+      <button id="btn-home"    class="toolbar-btn" aria-label="Home"    title="Level Select">🏠</button>
+      <button id="btn-restart" class="toolbar-btn" aria-label="Restart" title="Restart Level">🔄</button>
+      <button id="btn-mute"    class="toolbar-btn" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+    </div>
+    <div class="screen-content">
+
+      <!-- Level title and stage progress -->
+      <header class="game-header">
+        <h2 id="level-title" class="level-title">Build a Wall</h2>
+        <p id="stage-progress" class="stage-progress" aria-live="polite">Stage 1 of 4</p>
+      </header>
+
+      <!-- Stage instruction -->
+      <p id="stage-instruction" class="stage-instruction" aria-live="polite"></p>
+
+      <!-- Feedback message (success / failure / reminder) -->
+      <div id="feedback-message" class="feedback-message" role="status" aria-live="polite"></div>
+
+      <!-- Structure display — SVG diagram rendered by script.js -->
+      <div id="structure-display" class="structure-display" aria-label="Structure being built">
+        <svg id="structure-svg" width="100%" height="200" viewBox="0 0 600 200"
+             preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <!-- JS draws the structure here -->
+        </svg>
+      </div><!-- /#structure-display -->
+
+      <!-- Material cards -->
+      <div id="card-container" class="card-container" aria-label="Material choices" role="list"></div>
+
+    </div>
+  </section>
+
+  <!-- =================== RESULTS SCREEN =================== -->
+  <section id="screen-results" class="screen" aria-label="Results screen">
+    <div class="screen-content">
+      <h2>Results</h2>
+      <div id="results-content" class="results-content" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <script src="js/sound.js"></script>
+  <script src="js/scores.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

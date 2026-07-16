@@ -1,0 +1,338 @@
+/* =============================================================================
+   3. Shared Button Styles
+============================================================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.5rem; border-radius: 50px;
+  font-weight: 800;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  padding: 0.85rem 2.2rem;
+  min-height: 52px; min-width: 130px;
+  text-align: center; letter-spacing: 0.2px;
+  border: 3px solid rgba(0,0,0,0.10);
+  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1),
+              box-shadow 0.15s ease, filter 0.12s ease;
+  position: relative; overflow: hidden;
+}
+.btn:hover { transform: translateY(-4px) scale(1.05); }
+.btn:active { transform: scale(0.94); }
+
+/* Shine sweep */
+.btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.28) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.btn:hover::after { transform: translateX(100%); }
+
+.btn-primary {
+  background: linear-gradient(135deg, #FF9F0A, #FF6B00);
+  color: #fff;
+  box-shadow: 0 5px 0 #CC5200, 0 8px 20px rgba(255,107,0,0.4);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.btn-primary:hover { box-shadow: 0 8px 0 #CC5200, 0 12px 28px rgba(255,107,0,0.5); }
+
+.btn-secondary {
+  background: linear-gradient(135deg, #74C0FC, #339AF0);
+  color: #fff;
+  box-shadow: 0 5px 0 #1971C2, 0 8px 20px rgba(51,154,240,0.35);
+}
+.btn-secondary:hover { box-shadow: 0 8px 0 #1971C2, 0 12px 28px rgba(51,154,240,0.45); }
+
+/* Mute button â€” floating top-right of game screen */
+.btn-mute {
+  position: fixed; top: 1rem; right: 1rem;
+  z-index: 100;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: 2px solid #FFD700;
+  font-size: 1.4rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.btn-mute:hover { transform: scale(1.12); }
+
+/* =============================================================================
+   9. Material Cards
+============================================================================= */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem; width: 100%;
+}
+
+.card {
+  appearance: none; -webkit-appearance: none;
+  border: 3px solid #e0e0e0;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 0.9rem 0.75rem;
+  min-height: 52px; width: 100%;
+  cursor: grab;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.4rem; text-align: center;
+  box-shadow: 0 4px 0 #bdbdbd, 0 6px 16px rgba(0,0,0,0.10);
+  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1),
+              box-shadow 0.15s ease, border-color 0.15s ease;
+  color: #1a2e44; position: relative; overflow: hidden;
+}
+.card:active { cursor: grabbing; }
+.card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 8px 0 #9e9e9e, 0 10px 24px rgba(0,0,0,0.15);
+  border-color: #FFD700;
+  z-index: 2;
+}
+.card.dragging { opacity: 0.5; transform: scale(0.95); cursor: grabbing; }
+
+.card-texture-swatch {
+  display: block; height: 30px;
+  border-radius: 12px 12px 0 0;
+  margin: -0.9rem -0.75rem 0.55rem;
+  width: calc(100% + 1.5rem);
+  background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(0,0,0,0.03));
+}
+.card-icon { font-size: clamp(1.8rem, 5vw, 2.4rem); line-height: 1; display: block; }
+.card-name { font-size: clamp(0.875rem, 2.5vw, 1rem); font-weight: 800; color: #1a2e44; display: block; }
+.card-desc { font-size: clamp(0.72rem, 2vw, 0.82rem); color: #5a6a7a; line-height: 1.35; display: block; }
+
+/* Selected â€” thick gold ring */
+.card.selected {
+  border-color: #FFD700;
+  background: #FFFDE7;
+  transform: scale(1.08);
+  box-shadow: 0 0 0 4px rgba(255,215,0,0.5),
+              0 8px 0 #FFC200, 0 10px 24px rgba(255,215,0,0.3);
+  z-index: 3;
+}
+.card.selected .card-name { color: #E65100; }
+
+/* Drag ghost â€” floating clone that follows finger/cursor */
+.drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0.88;
+  z-index: 9999;
+  border-radius: 18px;
+  border: 3px solid #FFD700;
+  background: #FFFDE7;
+  transform: scale(1.1) rotate(3deg);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  transition: none;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.4rem;
+  padding: 0.9rem 0.75rem; text-align: center;
+  color: #1a2e44; font-family: inherit;
+}
+
+.drag-preview {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255,253,231,0.96);
+  border: 3px solid #FFD700;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+}
+
+.drag-preview-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.drag-preview.drag-ghost {
+  padding: 0;
+  border-radius: 50%;
+}
+
+/* =============================================================================
+   Drag fix â€” card stays FULLY opaque when dragging (no transparency)
+============================================================================= */
+.card.dragging {
+  opacity: 1 !important;        /* Override the old 0.5 â€” card stays solid */
+  transform: scale(1.06) rotate(2deg) !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3), 0 0 0 3px #FFD700 !important;
+  z-index: 10;
+  border-color: #FFD700 !important;
+}
+
+/* Drag ghost â€” the floating clone that follows the cursor/finger */
+.drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  opacity: 1;                   /* fully opaque */
+  z-index: 9999;
+  border-radius: 18px;
+  border: 3px solid #FFD700;
+  background: #FFFDE7;
+  transform: scale(1.08) rotate(3deg);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.9rem 0.75rem;
+  text-align: center;
+  color: #1a2e44;
+  font-family: inherit;
+}
+
+/* SVG tooltip (popup label) */
+.svg-tooltip-group {
+  pointer-events: none;
+}
+
+/* =============================================================================
+   Material Card texture swatches (restored)
+============================================================================= */
+.mat-concrete .card-texture-swatch,
+.mat-mass-concrete .card-texture-swatch,
+.mat-reinforced-concrete .card-texture-swatch,
+.mat-concrete-piles .card-texture-swatch,
+.mat-reinforced-concrete-spillway .card-texture-swatch {
+  background: #90a4ae;
+  background-image: radial-gradient(circle at 20% 50%, #607d8b 2px, transparent 2px),
+    radial-gradient(circle at 65% 25%, #78909c 2px, transparent 2px),
+    radial-gradient(circle at 80% 72%, #546e7a 1.5px, transparent 1.5px);
+}
+.mat-clay-bricks .card-texture-swatch {
+  background: #c0392b;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 22px,
+    rgba(0,0,0,0.22) 22px, rgba(0,0,0,0.22) 24px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 9px,
+    rgba(0,0,0,0.18) 9px, rgba(0,0,0,0.18) 10px);
+}
+.mat-sand .card-texture-swatch,
+.mat-bridge-sand .card-texture-swatch,
+.mat-core-sand .card-texture-swatch,
+.mat-sand-fill .card-texture-swatch,
+.mat-sand-facing .card-texture-swatch,
+.mat-cap-sand .card-texture-swatch,
+.mat-sand-base .card-texture-swatch {
+  background: #f9a825;
+  background-image: radial-gradient(circle at 15% 60%, rgba(140,100,0,0.45) 1px, transparent 1px),
+    radial-gradient(circle at 55% 30%, rgba(140,100,0,0.35) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(140,100,0,0.45) 1px, transparent 1px);
+}
+.mat-wood .card-texture-swatch,
+.mat-bridge-wood .card-texture-swatch,
+.mat-core-wood .card-texture-swatch,
+.mat-pier-wood .card-texture-swatch,
+.mat-timber-piles .card-texture-swatch,
+.mat-thin-wood .card-texture-swatch,
+.mat-timber-spillway .card-texture-swatch,
+.mat-plywood-floor .card-texture-swatch {
+  background: #795548;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 5px,
+    rgba(255,255,255,0.07) 5px, rgba(255,255,255,0.07) 6px);
+}
+.mat-structural-steel .card-texture-swatch,
+.mat-steel-rebar .card-texture-swatch,
+.mat-steel-railing .card-texture-swatch,
+.mat-composite-deck .card-texture-swatch,
+.mat-steel-membrane-roof .card-texture-swatch,
+.mat-steel-reinforced-concrete-piers .card-texture-swatch {
+  background: linear-gradient(135deg, #607d8b 0%, #cfd8dc 40%, #78909c 60%, #b0bec5 100%);
+}
+.mat-glass .card-texture-swatch,
+.mat-deck-glass .card-texture-swatch,
+.mat-glass-floor .card-texture-swatch,
+.mat-aluminium-glass-facade .card-texture-swatch {
+  background: linear-gradient(135deg, rgba(100,181,246,0.85), rgba(224,247,250,0.95), rgba(100,181,246,0.75));
+}
+.mat-gravel .card-texture-swatch,
+.mat-core-gravel .card-texture-swatch,
+.mat-gravel-base .card-texture-swatch {
+  background: #9e9e9e;
+  background-image: radial-gradient(circle at 20% 45%, #616161 2px, transparent 2px),
+    radial-gradient(circle at 65% 25%, #757575 2px, transparent 2px),
+    radial-gradient(circle at 85% 65%, #616161 1.5px, transparent 1.5px);
+}
+.mat-mortar .card-texture-swatch { background: linear-gradient(180deg, #e0e0e0, #9e9e9e); }
+.mat-water .card-texture-swatch {
+  background: linear-gradient(90deg, #1565c0, #42a5f5, #1565c0);
+  background-size: 200% 100%;
+  animation: waterShimmer 2s ease-in-out infinite;
+}
+@keyframes waterShimmer { 0%,100%{background-position:0%} 50%{background-position:100%} }
+.mat-bituminous-membrane .card-texture-swatch {
+  background: repeating-linear-gradient(45deg, #212121 0, #212121 4px, #37474f 4px, #37474f 8px);
+}
+.mat-bamboo .card-texture-swatch {
+  background: repeating-linear-gradient(90deg, #558b2f 0, #558b2f 8px, #33691e 8px, #33691e 10px);
+}
+.mat-plastic .card-texture-swatch,
+.mat-bridge-plastic .card-texture-swatch,
+.mat-plastic-sheet .card-texture-swatch,
+.mat-plastic-core .card-texture-swatch,
+.mat-plastic-film .card-texture-swatch {
+  background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+}
+.mat-foam .card-texture-swatch,
+.mat-foam-facing .card-texture-swatch,
+.mat-foam-floor .card-texture-swatch { background: #ffe0b2; }
+.mat-cardboard .card-texture-swatch,
+.mat-cardboard-railing .card-texture-swatch,
+.mat-cardboard-facade .card-texture-swatch,
+.mat-cardboard-wp .card-texture-swatch {
+  background: repeating-linear-gradient(0deg, #d7a25a 0, #d7a25a 3px, #bf8f4a 3px, #bf8f4a 6px);
+}
+.mat-riprap .card-texture-swatch,
+.mat-coping-stones .card-texture-swatch {
+  background: #607d8b;
+  background-image: radial-gradient(circle at 20% 40%, #455a64 4px, transparent 4px),
+    radial-gradient(circle at 60% 60%, #546e7a 3px, transparent 3px),
+    radial-gradient(circle at 82% 25%, #455a64 3px, transparent 3px);
+}
+.mat-rope .card-texture-swatch {
+  background: repeating-linear-gradient(45deg, #8d6e63 0, #8d6e63 4px, #6d4c41 4px, #6d4c41 8px);
+}
+.mat-mud .card-texture-swatch,
+.mat-compacted-clay .card-texture-swatch,
+.mat-clay-base .card-texture-swatch {
+  background: radial-gradient(ellipse, #5d4037 60%, #4e342e 100%);
+}
+.mat-hollow-bricks .card-texture-swatch,
+.mat-hollow-block .card-texture-swatch,
+.mat-shallow-slab .card-texture-swatch {
+  background: #b0bec5;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 14px,
+    rgba(0,0,0,0.2) 14px, rgba(0,0,0,0.2) 16px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 7px,
+    rgba(0,0,0,0.15) 7px, rgba(0,0,0,0.15) 8px);
+}
+.mat-grass-facing .card-texture-swatch { background: linear-gradient(180deg, #66bb6a, #2e7d32); }
+.mat-rubber .card-texture-swatch { background: #263238; }
+.mat-aluminium-foil .card-texture-swatch { background: linear-gradient(135deg, #e0e0e0, #fff, #bdbdbd); }
+.mat-thatch-roof .card-texture-swatch {
+  background: repeating-linear-gradient(90deg, #f9a825 0, #f9a825 3px, #f57f17 3px, #f57f17 6px);
+}
+.mat-paper-roof .card-texture-swatch { background: #fafafa; }
+.mat-clay-tiles-roof .card-texture-swatch {
+  background: #e64a19;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 10px,
+    rgba(0,0,0,0.2) 10px, rgba(0,0,0,0.2) 12px);
+}
+.mat-mass-concrete .card-texture-swatch { background: #90a4ae; }
+.mat-sandbags .card-texture-swatch {
+  background: repeating-linear-gradient(90deg, #a1887f 0, #a1887f 10px, #8d6e63 10px, #8d6e63 20px);
+}
+.mat-earth-spillway .card-texture-swatch { background: radial-gradient(ellipse, #8d6e63 40%, #5d4037 100%); }
+.mat-bamboo-core .card-texture-swatch {
+  background: repeating-linear-gradient(90deg, #558b2f 0, #558b2f 8px, #33691e 8px, #33691e 10px);
+}
+.mat-fabric-wall .card-texture-swatch {
+  background: repeating-linear-gradient(45deg, #7986cb 0, #7986cb 3px, #5c6bc0 3px, #5c6bc0 6px);
+}

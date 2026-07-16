@@ -1,0 +1,343 @@
+/* =============================================================================
+   11. Responsive Layout
+============================================================================= */
+@media (max-width: 720px) {
+  .screen {
+    padding: 1rem 0.75rem;
+    align-items: flex-start;
+  }
+
+  /* Game screen: fit everything in viewport */
+  #screen-game {
+    min-height: 100dvh;
+    max-height: 100dvh;
+    padding: 0.5rem;
+    overflow: hidden;
+  }
+  #screen-game .screen-content {
+    max-width: 100%;
+    border-radius: 18px;
+    padding: 0.75rem;
+    gap: 0.6rem;
+    max-height: calc(100dvh - 1rem);
+    overflow: hidden;
+  }
+
+  .screen-content {
+    max-width: 100%;
+    border-radius: 22px;
+    padding: 1.1rem;
+    gap: 1rem;
+  }
+
+  /* Compact game header */
+  .game-header {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    border-radius: 12px;
+  }
+  .level-title {
+    font-size: 1rem;
+    flex: 1;
+  }
+  .stage-progress {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    white-space: nowrap;
+  }
+
+  /* Compact instruction */
+  .stage-instruction {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    border-left-width: 3px;
+  }
+
+  /* Structure fills remaining space */
+  .structure-display {
+    min-height: 140px;
+    flex: 1 1 0;
+    border-radius: 14px;
+    border-width: 2px;
+  }
+
+  /* Cards: horizontal scroll strip */
+  .card-container {
+    display: flex !important;
+    grid-template-columns: unset !important;
+    gap: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.25rem;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  .card-container::-webkit-scrollbar {
+    height: 4px;
+  }
+  .card-container::-webkit-scrollbar-thumb {
+    background: rgba(255,215,0,0.5);
+    border-radius: 4px;
+  }
+
+  /* Cards: compact horizontal layout */
+  .card {
+    min-width: 130px;
+    max-width: 150px;
+    min-height: auto;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 0.5rem 0.5rem;
+    border-radius: 14px;
+    gap: 0.2rem;
+    border-width: 2.5px;
+    box-shadow: 0 3px 0 #bdbdbd, 0 4px 10px rgba(0,0,0,0.10);
+  }
+  .card-texture-swatch {
+    height: 20px !important;
+    margin-bottom: 0.3rem !important;
+    border-radius: 8px 8px 0 0 !important;
+    margin: -0.5rem -0.5rem 0.3rem !important;
+    width: calc(100% + 1rem) !important;
+  }
+  .card-icon {
+    font-size: 1.5rem !important;
+  }
+  .card-name {
+    font-size: 0.78rem !important;
+    line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 0.65rem !important;
+    line-height: 1.25;
+    min-height: 0 !important;
+    line-clamp: 2;
+  -webkit-line-clamp: 2;
+  }
+
+  .level-buttons,
+  .results-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .level-buttons {
+    display: grid;
+  }
+
+  .results-buttons {
+    display: grid;
+  }
+
+  .btn-level {
+    min-height: 132px;
+    padding: 1rem;
+  }
+
+  #screen-start .btn-primary {
+    min-width: 0;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .results-buttons .btn {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  body::before,
+  body::after {
+    opacity: 0.35;
+  }
+
+  .screen {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .screen-content {
+    padding: 0.9rem;
+    border-width: 3px;
+    border-radius: 18px;
+  }
+
+  /* Game screen: even tighter */
+  #screen-game {
+    padding: 0.35rem;
+  }
+  #screen-game .screen-content {
+    padding: 0.5rem;
+    gap: 0.4rem;
+    border-radius: 14px;
+    border-width: 3px;
+    max-height: calc(100dvh - 0.7rem);
+  }
+  .game-header {
+    padding: 0.35rem 0.6rem;
+    border-radius: 10px;
+    border-width: 1.5px;
+  }
+  .stage-instruction {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  .structure-display {
+    min-height: 120px;
+    border-radius: 12px;
+  }
+
+  /* Cards even more compact */
+  .card {
+    min-width: 115px;
+    max-width: 135px;
+    padding: 0.4rem 0.4rem;
+  }
+  .card-icon {
+    font-size: 1.3rem !important;
+  }
+  .card-name {
+    font-size: 0.72rem !important;
+  }
+  .card-desc {
+    font-size: 0.6rem !important;
+    line-clamp: 1 !important;
+    -webkit-line-clamp: 1 !important;
+  }
+
+  .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .btn-mute {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+  }
+
+  .level-icon {
+    font-size: 2.4rem;
+  }
+
+  #structure-svg {
+    width: 100%;
+  }
+}
+
+/* =============================================================================
+   MOBILE: Long-press drag feedback & tap-prompt
+============================================================================= */
+
+/* Long-press visual: card grows and glows before drag activates */
+.card.long-press-active {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 4px rgba(255,215,0,0.6),
+              0 8px 24px rgba(255,107,0,0.3);
+  border-color: #FFD700;
+  z-index: 5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Ring fill animation during long press */
+.card.long-press-active::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 3px solid transparent;
+  border-top-color: #FF6B00;
+  animation: longPressRing 0.4s linear forwards;
+  pointer-events: none;
+  z-index: 6;
+}
+@keyframes longPressRing {
+  0%   { transform: rotate(0deg);   border-top-color: #FF6B00; }
+  25%  { border-right-color: #FF6B00; }
+  50%  { border-bottom-color: #FF6B00; }
+  75%  { border-left-color: #FF6B00; }
+  100% { transform: rotate(360deg); border-color: #FF6B00; }
+}
+
+/* Tap-prompt pill â€” appears floating above structure after card selection */
+.tap-prompt {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-110%);
+  background: linear-gradient(135deg, #FF9F0A, #FF6B00);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(255,107,0,0.4);
+  white-space: nowrap;
+  z-index: 50;
+  animation: tapPromptBounce 1s ease-in-out infinite;
+  pointer-events: none;
+  letter-spacing: 0.3px;
+}
+.tap-prompt::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #FF6B00;
+}
+@keyframes tapPromptBounce {
+  0%, 100% { transform: translateX(-50%) translateY(-110%); }
+  50%      { transform: translateX(-50%) translateY(-120%); }
+}
+
+/* Mobile overlay feedback â€” floats on top of structure */
+@media (max-width: 720px) {
+  .feedback-message.visible {
+    position: fixed;
+    top: auto;
+    bottom: 4.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90vw;
+    z-index: 300;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    animation: feedbackSlideUp 0.25s ease-out;
+  }
+  @keyframes feedbackSlideUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+}
+
+/* Success flash & wobble â€” keep existing but ensure they work on mobile */
+.success-flash {
+  animation: successFlash 0.4s ease;
+}
+@keyframes successFlash {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.25); }
+}
+.wobble {
+  animation: wobbleShake 0.35s ease;
+}
+@keyframes wobbleShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+@keyframes feedbackAppear {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}

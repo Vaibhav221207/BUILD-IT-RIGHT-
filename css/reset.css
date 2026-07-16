@@ -1,0 +1,68 @@
+/* =============================================================================
+   Build It Right â€” style.css  (Kids-Friendly Bright Theme)
+   Playful daytime sky background, bright pastel cards, bouncy animations.
+   No frameworks Â· No Google Fonts Â· Vanilla CSS only
+============================================================================= */
+
+/* =============================================================================
+   1. Reset & Base
+============================================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  /* Bright daytime sky â†’ grass gradient */
+  background: linear-gradient(180deg,
+    #87CEEB 0%,
+    #B0E2FF 35%,
+    #C8F0A0 70%,
+    #90EE90 100%);
+  background-attachment: fixed;
+  color: #1a2e44;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Animated sun â€” top right corner */
+body::before {
+  content: '';
+  position: fixed;
+  top: -40px; right: -40px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, #FFD700 40%, #FFA500 65%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px 20px rgba(255,215,0,0.35);
+  animation: sunSpin 20s linear infinite;
+  z-index: 0; pointer-events: none;
+}
+@keyframes sunSpin {
+  0%   { transform: rotate(0deg)   scale(1); }
+  50%  { transform: rotate(180deg) scale(1.08); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Floating clouds — CSS only */
+body::after {
+  content: '☁️';
+  position: fixed;
+  top: 60px; left: -80px;
+  font-size: 3.5rem;
+  opacity: 0.55;
+  animation: cloudDrift 18s linear infinite;
+  z-index: 0; pointer-events: none;
+}
+@keyframes cloudDrift {
+  0%   { left: -80px; }
+  100% { left: 110vw; }
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+button:focus-visible { outline: 3px solid #FF6B00; outline-offset: 3px; }
+
+h1, h2, h3 { line-height: 1.2; }
+
+.screen, .screen-content { position: relative; z-index: 1; }

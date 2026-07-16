@@ -83,15 +83,24 @@
   opacity: 0; visibility: hidden;
   transition: opacity 0.15s ease, visibility 0.15s ease;
   border: 2px solid transparent;
-  /* Prevent feedback from pushing layout on mobile */
-  min-height: 0;
+  /*
+   * KEY: zero height when hidden so it never pushes layout.
+   * max-height + overflow:hidden collapses the box without affecting
+   * sibling positions. When .visible is added we expand it.
+   */
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
 }
-.feedback-message:not(.visible) {
-  position: absolute;
-  width: 1px; height: 1px;
-  overflow: hidden; clip: rect(0,0,0,0);
+.feedback-message.visible {
+  opacity: 1;
+  visibility: visible;
+  max-height: 120px;      /* enough for two lines of text */
+  padding: 0.9rem 1.25rem;
+  animation: feedbackAppear 0.22s ease-out;
 }
-.feedback-message.visible { opacity: 1; visibility: visible; animation: feedbackAppear 0.22s ease-out; }
 
 .feedback-success {
   background: #D4EDDA; color: #155724; border-color: #51CF66;
